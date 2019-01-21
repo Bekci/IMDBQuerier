@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import time
 from selenium.webdriver.common.keys import Keys
+from film_content_parser import obtain_film_object
 
 # Time to wait for web page to be loaded.
 TIME_FACTOR = 20
@@ -23,6 +24,8 @@ soup = BeautifulSoup(content, 'lxml')
 film_contents = soup.find_all("div", class_="lister-item-content")
 
 for content in film_contents:
+    obtain_film_object(content)
+    """
     name = content.find("a").text
     year = content.find("span", class_="lister-item-year text-muted unbold").text
     runtime = content.find("span", class_="runtime").text
@@ -34,3 +37,4 @@ for content in film_contents:
     print(genre.split(','))
     print(point)
     print("------------------")
+    """
