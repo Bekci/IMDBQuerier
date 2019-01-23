@@ -3,12 +3,13 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.keys import Keys
 from film_content_parser import obtain_film_object
+from parser_config import check_film_object
 
 # Time to wait for web page to be loaded.
 TIME_FACTOR = 20
 
-list_url = "https://www.imdb.com/list/ls064927382/?ref_=tt_rls_2"
-
+list_url = "https://www.imdb.com/list/ls069592298/?ref_=tt_rls_4"
+list_url = "https://www.imdb.com/list/ls024004591/?ref_=tt_rls_2"
 driver = webdriver.Chrome()
 
 # driver.maximize_window()
@@ -24,17 +25,5 @@ soup = BeautifulSoup(content, 'lxml')
 film_contents = soup.find_all("div", class_="lister-item-content")
 
 for content in film_contents:
-    obtain_film_object(content)
-    """
-    name = content.find("a").text
-    year = content.find("span", class_="lister-item-year text-muted unbold").text
-    runtime = content.find("span", class_="runtime").text
-    genre = content.find("span", class_="genre").text
-    point = content.find("span", class_="ipl-rating-star__rating").text
-    print(name)
-    print(year)
-    print(runtime)
-    print(genre.split(','))
-    print(point)
-    print("------------------")
-    """
+    current_film = obtain_film_object(content)
+    check_film_object(current_film)

@@ -3,6 +3,7 @@ Parse strings obtained from the html to get the film metadata.
 Fix metadata and create an film object to be use it later.
 """
 
+from ClassFilm import Film
 
 """
 Eliminate parenthesis from the text.
@@ -58,13 +59,19 @@ Determine the film type from the year text.
 A TV-series will include '-' but a film will not include.
 """
 def determine_film_type(year_text):
-    return '-' in year_text
+    if '–' in year_text:
+        return 'tv-series'
+    return 'film'
 
 """
 Take a html block representing the film item
 Apply parsing and return film object
 """
 def obtain_film_object(content):
+    # Runtime and score of a film might not given in the list item.
+    runtime = "unknown"
+    point = "unknown"
+
     raw_name = content.find("a").text
     raw_year = content.find("span", class_="lister-item-year text-muted unbold").text
     raw_runtime = content.find("span", class_="runtime")
@@ -85,6 +92,6 @@ def obtain_film_object(content):
     year = parse_film_year(raw_year)
     genre_list = obtain_all_genres(raw_genre)
     storyline = obtain_story_line(raw_storyline)
-    print(raw_name)
-    print(determine_film_type(year))
-    print(year)
+    f_type = determine_film_type(year)
+
+    return Film(raw_name, raw_year, point, genre_list, runtime, storyline, f_type)

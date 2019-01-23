@@ -13,3 +13,13 @@ class Film(object):
         self.runtime = f_runtime
         self.storyline = f_storyline
         self.type = f_type
+
+
+    def print_film(self):
+        print("Film, ", self.name)
+        print("Year ", self.year)
+        print('Rating', self.rating)
+        print("Genres", self.genres)
+        print('Runtime', self.runtime)
+        print('Storyline', self.storyline)
+        print('Type,', self.type)

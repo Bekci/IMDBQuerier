@@ -5,31 +5,45 @@ Define and check rules for a film object.
 # Rules for the film object
 parse_options = {
     'type': 'film',
+    'runtime_min': 80,
+    'runtime_max': 140,
+    'inlude_unkown_runtime': False,
     'score_range_min': '6.9',
     'score_range_max': '10.0',
-    'year_range_oldest': '2003',
-    'year_range_newest': '2010',
-    'wanted_genres': [],
-    'unwanted_genres': ['romance', 'musical'],
+    'include_unknown_score': False,
+    'year_range_oldest': 2003,
+    'year_range_newest': 2019,
+    'wanted_genres': ['drama'],
+    'unwanted_genres': ['romance', 'musical','horror', 'documentary'],
     # Whether add or remove a film
     # whose genre neither in wanted_genres nor unwanted_genres list
     'add_not_unwanted_&_not_wanted': True,
     'include_watched': False
 }
 
+def check_runtime(film_runtime):
+    if film_runtime == 'unknown':
+        return parse_options['inlude_unkown_runtime']
+    min_runtime = parse_options['runtime_min']
+    max_runtime = parse_options['runtime_max']
+
+    return film_runtime >= min_runtime and film_runtime <= max_runtime
+
 def check_genre(film_genre_list):
     for genre in film_genre_list:
-        if genre in parse_options['unwanted_genres']:
+        if genre.lower() in parse_options['unwanted_genres']:
             return False
     if parse_options['wanted_genres'] is None or len(parse_options['wanted_genres']) == 0:
         return True
     for genre in film_genre_list:
-        if genre in parse_options['wanted_genres']:
+        if genre.lower() in parse_options['wanted_genres']:
             return True
     return parse_options['add_not_unwanted_&_not_wanted']
 
 
 def check_score(score_range):
+    if score_range == 'unknown':
+        return parse_options['include_unknown_score']
     min_score = float(parse_options['score_range_min']) * 10
     max_score = float(parse_options['score_range_max']) * 10
     return score_range >= min_score and score_range <= max_score
@@ -38,7 +52,7 @@ def check_score(score_range):
 def check_year(year_range):
     min_year = parse_options['year_range_oldest']
     max_year = parse_options['year_range_newest']
-    return year_range >= min_year and year_range <= max_year
+    return int(year_range) >= min_year and int(year_range) <= max_year
 
 
 def check_type(film_type):
@@ -50,13 +64,22 @@ def check_type(film_type):
 
 
 def check_film_object(film_object):
-    if not check_genre(film_object.f_genres):
+    print(film_object.name)
+    if not check_runtime(film_object.runtime):
+        print("Failed on runtime")
         return False
-    if not check_score(film_object.rating)
+    if not check_genre(film_object.genres):
+        print("Failed on genre")
         return False
-    if not check_year(film_object.year)
+    if not check_score(film_object.rating):
+        print("Failed on rating")
         return False
-    if not check_type(film_object.type)
+    if film_object.type == 'film' and not check_year(film_object.year):
+        print(film_object.year)
+        print("Failed on year")
+        return False
+    if not check_type(film_object.type):
+        print("Failed on type")
         return False
     # All of the above rules applied for the object
     return True
