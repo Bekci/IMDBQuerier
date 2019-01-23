@@ -9,7 +9,7 @@ class Film(object):
         self.name = f_name
         self.year = f_year
         self.rating = f_rating
-        self.genres = f_rating
+        self.genres = f_genres
         self.runtime = f_runtime
         self.storyline = f_storyline
-        self.fim_type = f_type
+        self.type = f_type
