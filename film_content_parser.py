@@ -4,13 +4,15 @@ Fix metadata and create an film object to be use it later.
 """
 
 from ClassFilm import Film
+import re
 
 """
 Eliminate parenthesis from the text.
 '(2019)' -> '2019'
 """
 def parse_film_year(year_text):
-    return year_text.replace('(' , '').replace(')' , '')
+    found_numbers = re.findall("[0-9]", year_text)
+    return ''.join(found_numbers[0:4])
 
 
 """
@@ -64,15 +66,28 @@ def determine_film_type(year_text):
     return 'film'
 
 """
+Sometimes images cannot be loaded and its src will be a placeholder.
+For such cases, loadlate tag will be the real source. 
+"""
+def obtain_image_source(img_html):
+    if 'loadlate' in img_html.attrs:
+        return img_html['loadlate']
+    else:
+        return img_html['src']
+
+
+"""
 Take a html block representing the film item
 Apply parsing and return film object
 """
-def obtain_film_object(content):
+def obtain_film_object(content, image_raw):
     # Runtime and score of a film might not given in the list item.
     runtime = "unknown"
     point = "unknown"
 
-    raw_name = content.find("a").text
+    raw_name_with_link = content.find('a')
+    raw_name = raw_name_with_link.text
+    film_imdb_link = raw_name_with_link['href']
     raw_year = content.find("span", class_="lister-item-year text-muted unbold").text
     raw_runtime = content.find("span", class_="runtime")
 
@@ -93,5 +108,6 @@ def obtain_film_object(content):
     genre_list = obtain_all_genres(raw_genre)
     storyline = obtain_story_line(raw_storyline)
     f_type = determine_film_type(year)
+    image_source = obtain_image_source(image_raw)
 
-    return Film(raw_name, raw_year, point, genre_list, runtime, storyline, f_type)
+    return Film(raw_name, year, point, genre_list, runtime, storyline, f_type, image_source, film_imdb_link)
