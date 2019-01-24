@@ -64,22 +64,15 @@ def check_type(film_type):
 
 
 def check_film_object(film_object):
-    print(film_object.name)
     if not check_runtime(film_object.runtime):
-        print("Failed on runtime")
         return False
     if not check_genre(film_object.genres):
-        print("Failed on genre")
         return False
     if not check_score(film_object.rating):
-        print("Failed on rating")
         return False
     if film_object.type == 'film' and not check_year(film_object.year):
-        print(film_object.year)
-        print("Failed on year")
         return False
     if not check_type(film_object.type):
-        print("Failed on type")
         return False
     # All of the above rules applied for the object
     return True

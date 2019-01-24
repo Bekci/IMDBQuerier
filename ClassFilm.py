@@ -30,7 +30,11 @@ class Film(object):
         return sep.join(self.genres)
 
     def get_image_html(self):
-        return '<img alt="%s" height="209" width="140" src="%s" >' % (self.name, self.image_source)
+        return '<a href="https://www.imdb.com%s"> <img alt="%s" height="209" width="140" src="%s" > </a>' % (self.imdb_link, self.name, self.image_source)
 
     def get_title(self):
-        return '<a href="https://www.imdb.com%s"> %s </a>' % (self.imdb_link, self.name)
+        return '<a href="https://www.imdb.com%s"><h4> %s </h4></a>' % (self.imdb_link, self.name)
+
+
+    def get_rating(self):
+        return '<span class="rating">  %s </span>' % str((self.rating / 10))

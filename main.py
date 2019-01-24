@@ -7,19 +7,22 @@ from parser_config import check_film_object
 from html_creator import create_html_file
 
 # Time to wait for web page to be loaded.
-TIME_FACTOR = 15
+TIME_FACTOR = 3
 
-list_url = "https://www.imdb.com/list/ls069592298/?ref_=tt_rls_4"
+# Give the URL of the imdb list.
 list_url = "https://www.imdb.com/list/ls024004591/?ref_=tt_rls_2"
+
+print("Opening a webdriver")
 driver = webdriver.Chrome()
 
 # driver.maximize_window()
 driver.get(list_url)
 
+print("Waiting the website to be loaded")
 # Wait browser to load the page.
-time.sleep(TIME_FACTOR / 3)
+time.sleep(TIME_FACTOR)
 
-content = driver.page_source.encode('utf-8').strip()
+content = driver.page_source.encode('utf-16').strip()
 soup = BeautifulSoup(content, 'lxml')
 
 # Obtain all films
@@ -27,7 +30,9 @@ film_contents = soup.find_all("div", class_="lister-item mode-detail")
 
 wanted_films = []
 
+list_header = soup.find("h1", class_='header list-name').text
 
+print("Parsing and querying films")
 for all_content in film_contents:
     img_source = all_content.find('div', class_='lister-item-image ribbonize').find('img')
     content = all_content.find('div', class_='lister-item-content')
@@ -35,4 +40,7 @@ for all_content in film_contents:
     if check_film_object(current_film):
         wanted_films.append(current_film)
 
-create_html_file(wanted_films)
+create_html_file(wanted_films, list_header)
+print("New html created with the name ",list_header )
+
+driver.close()
