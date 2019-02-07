@@ -40,6 +40,9 @@ def create_table_from_object(film_object):
                     <td colspan="3"> %s</td>
                 </tr>
                 <tr>
+                <td colspan="3">Year: %s</td>
+                </tr>
+                <tr>
                     <td> %s mins</td>
                     <td>%s </td>
                     <td>IMDB Rating: %s </td>
@@ -50,7 +53,7 @@ def create_table_from_object(film_object):
             </table>
             </li>
             <br>
-    """ % (film_object.get_image_html(), film_object.get_title(), film_object.runtime,
+    """ % (film_object.get_image_html(), film_object.get_title(), film_object.year, film_object.runtime,
             film_object.get_genres_string(), film_object.get_rating(), film_object.storyline)
 
 def create_html_file(film_objects_list, list_name):

@@ -10,7 +10,7 @@ from html_creator import create_html_file
 TIME_FACTOR = 3
 
 # Give the URL of the imdb list.
-list_url = "https://www.imdb.com/list/ls024004591/?ref_=tt_rls_2"
+list_url = "https://www.imdb.com/list/ls047677021/?ref_=tt_rels_1"
 
 print("Opening a webdriver")
 driver = webdriver.Chrome()

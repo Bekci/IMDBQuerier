@@ -11,7 +11,7 @@ parse_options = {
     'score_range_min': '6.9',
     'score_range_max': '10.0',
     'include_unknown_score': False,
-    'year_range_oldest': 2003,
+    'year_range_oldest': 1990,
     'year_range_newest': 2019,
     'wanted_genres': ['drama'],
     'unwanted_genres': ['romance', 'musical','horror', 'documentary'],
