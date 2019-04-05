@@ -3,19 +3,29 @@ from selenium import webdriver
 import time
 from selenium.webdriver.common.keys import Keys
 from film_content_parser import obtain_film_object
-from parser_config import check_film_object
+from parser_config import check_film_object, watched_included
 from html_creator import create_html_file
+
+def get_watched_films(file_path):
+    watched_films_txt = open(file_path, 'r')
+    if watched_films_txt:
+        watched_names = watched_films_txt.read().split('\n')
+        return [names  for names in watched_names if names != '']
+    return None
+
+watched_films = None
+if not watched_included():
+    watched_films = get_watched_films('watched_films.txt')
 
 # Time to wait for web page to be loaded.
 TIME_FACTOR = 3
 
 # Give the URL of the imdb list.
-list_url = "https://www.imdb.com/list/ls047677021/?ref_=tt_rels_1"
+list_url = "https://www.imdb.com/list/ls041732779/?ref_=tt_rls_5"
 
 print("Opening a webdriver")
 driver = webdriver.Chrome()
 
-# driver.maximize_window()
 driver.get(list_url)
 
 print("Waiting the website to be loaded")
@@ -37,7 +47,7 @@ for all_content in film_contents:
     img_source = all_content.find('div', class_='lister-item-image ribbonize').find('img')
     content = all_content.find('div', class_='lister-item-content')
     current_film = obtain_film_object(content, img_source)
-    if check_film_object(current_film):
+    if check_film_object(current_film, watched_films):
         wanted_films.append(current_film)
 
 create_html_file(wanted_films, list_header)

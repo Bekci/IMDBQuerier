@@ -67,7 +67,7 @@ def determine_film_type(year_text):
 
 """
 Sometimes images cannot be loaded and its src will be a placeholder.
-For such cases, loadlate tag will be the real source. 
+For such cases, loadlate tag will be the real source.
 """
 def obtain_image_source(img_html):
     if 'loadlate' in img_html.attrs:

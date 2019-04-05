@@ -62,8 +62,10 @@ def check_type(film_type):
         return True
     return False
 
+def watched_included():
+    return parse_options['include_watched']
 
-def check_film_object(film_object):
+def check_film_object(film_object, watched_films=None):
     if not check_runtime(film_object.runtime):
         return False
     if not check_genre(film_object.genres):
@@ -73,6 +75,8 @@ def check_film_object(film_object):
     if film_object.type == 'film' and not check_year(film_object.year):
         return False
     if not check_type(film_object.type):
+        return False
+    if watched_films is not None and film_object.name in watched_films:
         return False
     # All of the above rules applied for the object
     return True

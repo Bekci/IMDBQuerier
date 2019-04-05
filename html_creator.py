@@ -64,5 +64,5 @@ def create_html_file(film_objects_list, list_name):
 
     crete_directory()
 
-    html_file = open(os.path.join(HTML_DIRS, list_name + '.html'), "w")
+    html_file = open(os.path.join(HTML_DIRS, list_name + '.html'), "w", encoding='utf-8')
     html_file.write(start_html(list_name) + film_html_str + close_html() )
